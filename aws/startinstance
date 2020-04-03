@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Output color
+RED='\033[0;31m'
+# Start the instance
+echo -e "${RED}Starting the rhcsa instance"
+sleep 1
+aws ec2 start-instances --instance-ids <REPLACE-WITH-INSTANCE-ID>
+# Get public IPV4 address
+echo -e "${RED}Waiting for the instance to launch"
+sleep 45
+ip=$(aws ec2 describe-instances --instance-ids <REPLACE-WITH-INSTANCE-ID> --query 'Reservations[*].Instances[*].PublicIpAddress' --output text) 
+sleep 1
+#SSH to instance
+ssh -i <REPLACE-WITH-PRIVATE-KEY-PATH> ec2-user@"$ip"
